@@ -12,6 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "morgan": "1.10.1",
     "vue": "^3.5.22"
   },
   "devDependencies": {
