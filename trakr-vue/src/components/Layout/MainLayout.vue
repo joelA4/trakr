@@ -1,6 +1,21 @@
 <script setup>
+    import { ref } from 'vue'
+
     import NavigationBar from './NavigationBar.vue'
     import SideMenu from './SideMenu.vue'
+    import QuickActionsFAB from '../dashboard/QuickActionsFAB.vue'
+    import TransactionModal from '../forms/TransactionModal.vue';
+
+    // Aqui manejaremos el estado del modal despues 
+    const showModal = ref(false)
+
+    function onOpenTransactionModal() {
+        showModal.value = true
+    }
+
+    function onCloseModal(){
+        showModal.value = false
+    }
 
 </script>
 
@@ -15,6 +30,10 @@
                 <RouterView />
             </main>
         </div>
+
+        <QuickActionsFAB @open-transaction-modal="onOpenTransactionModal" />
+
+        <TransactionModal :show="showModal" @close="onCloseModal" />
     </div>
 </template>
 

@@ -9,9 +9,9 @@
 </script>
 
 <template>
-    <Button :class="variant">
+    <button :class="variant">
         {{ label }}
-    </Button>
+    </button>
 </template>
 
 <style scoped>
