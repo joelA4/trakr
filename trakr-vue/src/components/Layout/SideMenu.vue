@@ -4,6 +4,7 @@
     <aside class="side-menu">
         <nav>
             <ul>
+                <!-- rutas fixed -->
                 <li><RouterLink to="/dashboard">Dashboard</RouterLink></li>
                 <li><RouterLink to="/Transactions">Transactions</RouterLink></li>
                 <li><RouterLink to="/budgeting">budgeting</RouterLink></li>

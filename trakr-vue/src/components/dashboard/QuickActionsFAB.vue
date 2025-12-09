@@ -7,7 +7,7 @@
 </script>
 
 <template>
-    <button class="fab" @click="handleClick">
+    <button class="fab" @click="handleClick" >
         +
     </button>
 </template>

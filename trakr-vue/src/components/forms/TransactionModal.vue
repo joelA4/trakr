@@ -9,13 +9,14 @@
 </script>
 
 <template>
-    <div v-if="show" class="modal-backdrop">
+    <div v-if="show" class="modal-backdrop" @click.self="emit('close')">
         <div class="modal-content">
             <h2>Nueva Transaccion</h2>
 
             <p>Aqui iria el form despues.</p>
 
-            <button @click="emit('close')">Cerrar</button>
+            <!-- boton para cerrar el modal-content -->
+           <!-- <button @click="emit('close')">Cerrar</button>  --> 
         </div>
     </div>
 </template>
