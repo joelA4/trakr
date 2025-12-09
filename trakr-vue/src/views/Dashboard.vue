@@ -14,7 +14,7 @@
 
     <AlertMessage type="success" message="Todo esta funcando bien" />
 
-    <DataCard tittle="Balance Total" value="$12,450" />
+    <DataCard title="Balance Total" value="$12,450" />
 
     <Button label="Agregar Transaccion" variant="primary" />
 
