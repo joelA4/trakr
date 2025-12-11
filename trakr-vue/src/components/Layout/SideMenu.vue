@@ -10,6 +10,7 @@
                 <li><RouterLink to="/budgeting">budgeting</RouterLink></li>
                 <li><RouterLink to="/settings">Settings</RouterLink></li>
                 <li><RouterLink to="/reports">Reports</RouterLink></li>
+                <li><RouterLink to="/wallets">wallets</RouterLink></li>
             </ul>
         </nav>
     </aside>

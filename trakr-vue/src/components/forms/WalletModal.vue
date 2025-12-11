@@ -18,8 +18,8 @@
 </script>
 
 <template>
-    <div v-if="isOpen" class="modal-backdrop">
-        <div class="modal">
+    <div v-if="isOpen" class="modal-backdrop"  >
+        <div class="modal" @click.self="isOpen = true">
             <h2>Nueva cartera</h2>
 
             <input v-model="title" placeholder="nombre de la cartera" />
