@@ -1,15 +1,15 @@
 <script setup>
-    import { ref } from 'vue'
+    import { computed, ref } from 'vue'
     import DataCard from '@/components/ui/DataCard.vue'
     import Button from '@/components/ui/Button.vue'
     import WalletModal from '@/components/forms/WalletModal.vue'
     import EditWalletModal from '@/components/modals/EditWalletModal.vue'
+    import { useWalletsStore } from '@/stores/wallets'
+
+    const walletsStore = useWalletsStore()
     
-    //Lista de carteras (por ahora simulada)
-    const wallets = ref([
-        { id: 1, name: 'Efectivo', balance: 350 },
-        { id: 2, name: 'Banco Capital One', balance: 500 },
-    ])
+    //Lista de carteras: llamadas desde el stores
+    const wallets = computed(()  => walletsStore.wallets)
 
     const showModal = ref(false)
 
@@ -24,18 +24,9 @@
     const applyEdit = (updateWallet)=>{
         Object.assign(editingWallet.value, updateWallet);
     }
-    // function applyEdit(updateWallet){
-    //     const index = wallets.value.findIndex(w => w.id === updateWallet.id)
-    //     if (index !== -1) {
-    //         wallets.value[index] = updateWallet
-    //     }
-    // }
 
     function addWallet(newWallet) {
-        wallets.value.push({
-            id: Date.now(),
-            ...newWallet
-        })
+        walletsStore.addWallet(newWallet)
     }
 </script>
 

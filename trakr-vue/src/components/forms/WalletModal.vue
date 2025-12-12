@@ -20,7 +20,6 @@
     // }
     
     const local = ref({ name: '', balance: 0 })
-
     const errors = computed(() => {
         const e = {}
         if (!local.value.name || !String(local.value.name).trim()) { //usamos el trim para evitar que hayan nombres con espacios
