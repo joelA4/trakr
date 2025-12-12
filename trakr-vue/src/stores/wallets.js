@@ -32,3 +32,5 @@
             deleteWallet
         }  
     })
+
+    //falta agregar el DELETE
