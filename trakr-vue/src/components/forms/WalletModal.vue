@@ -19,6 +19,7 @@
         if (!name.value || !String(name.value).trim()) { //usamos el trim para evitar que hayan nombres con espacios
             e.name = 'El nombre no puede quedar vacio. '
         }
+        
         if (balance.value === '' || balance.value === null || isNaN(Number(balance.value))) {
             e.balance = 'El saldo debe de ser un numero.'
         } else if ( Number(balance.value) < 0 ){

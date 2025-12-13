@@ -1,73 +1,64 @@
 <script setup>
-import { ref, watch, computed } from 'vue'
+    import { ref, watch, computed } from 'vue'
+    import { useWalletsStore } from '@/stores/wallets'
+    
+    const walletsStore = useWalletsStore()
+    const emit = defineEmits(['update:modelValue', 'save'])
 
-    // const localWallet = ref({}) //Ya la declare de nuevo abajo
-
+    // Recibimos la wallet a editar desde el padre
     const props = defineProps({
         modelValue: Boolean,
-        wallet: Object
+        wallet: {
+            type: Object,
+            require: true
+        }
     })
 
-    //Cuando el props.wallet cambia, clonamos el local
+    // Creamos estado local para el formulario
+    // Importante: Copiamos los valores, no usamos props directos
+    const name = ref('')
+    const balance = ref(0)
+
+    
+    //Errores Calculados por cambios: errors Es un computed que verifica los campos y devuelve mensajes
+    const errors = computed(() => { 
+        const e = {}
+        if (!name.value || !String(name.value).trim() ){
+            e.name = 'El nombre no puede quedar vacio.'
+        }
+        
+        if (balance.value === '' || balance.value === null || isNaN(Number(balance.value))) {
+            e.balance = 'El saldo debe ser un numero.'
+        } else if (Number(balance.value) < 0){
+            e.balance = 'El saldo no puede ser negativo.'
+        }
+        
+        return e
+    })
+    
+    // Cuando el props.wallet cambia, clonamos el local cargando 
+    // los datos en el formulario
     watch(
         () => props.wallet,
         (newWallet) => {
             if (newWallet) {
-                localWallet.value = { ...newWallet }
+                name.value = newWallet.name
+                balance.value = newWallet.balance
             }
         },
         { immediate: true }
     )
-
-    // function saveChanges() {
-    //     emit('save', { ...localWallet.value })
-    //     console.log('Guardando cambios', localWallet.value)
-    //     emit('update:modelValue', false )
-    // }
-
-    const emit = defineEmits(['update:modelValue', 'save'])
-
-    const localWallet = ref({ id: null, name: '', balance: 0 })
-
-    // cuando props.wallet cambia, clonamos al local
-    watch(
-        () => props.wallet,
-        (w) => {
-            if (w) {
-                localWallet.value = { ...w }
-            } else {
-                localWallet.value = { id: null, name: '', balance: 0 }
-            }
-        },
-        { immediate: true }
-    )
-
-    //Errores Calculados por cambios: errors Es un computed que verifica los campos y devuelve mensajes
-    const errors = computed(() => { 
-        const e = {}
-        const name = localWallet.value.name
-        const balance = localWallet.value.balance
-
-        if (!name || !String(name).trim() ){
-            e.name = 'El nombre no puede quedar vacio.'
-        }
-
-        if (balance === '' || balance === null || isNaN(Number(balance))) {
-            e.balance = 'El saldo debe ser un numero.'
-        } else if (Number(balance) < 0){
-            e.balance = 'El saldo no puede ser negativo.'
-        }
-
-        return e
-    })
-
+    
     //validez global: depende de errors
     const isValid = computed(() => Object.keys(errors.value).length === 0)
 
-    function saveChanges() { //Guarda cambios: emite 'save' solo si todo es valido y cierra el modal
-        if (!isValid.value) return
-        emit('save', { ...localWallet.value})
-        emit('update:modelValue', false)
+    // Guardar los cambios
+    const saveChanges = () => {
+        walletsStore.updateWallet(props.wallet.id, {
+            name: name.value,
+            balance: balance.value
+        })
+    emit('update:modelValue', false)
     }
 
     function close() { //Cierra el modal
@@ -79,17 +70,19 @@ import { ref, watch, computed } from 'vue'
                 <!-- Modal de editar-->
     <div  v-if="modelValue" class="modal" @click.self="close">
         <div class="modal-content" >
+
             <h2>Editar cartera</h2> <!--Titulo-->
     
             <form @submit.prevent="saveChanges" novalidate>
+
                 <label>
                     Nombre: 
-                    <input v-model="localWallet.name" type="text" /> <br/> 
+                    <input v-model="name" type="text" /> <br/> 
                 </label>
                 <p v-if="errors.name" class="error">{{ errors.name }}</p>
                 <label>
                     Balance: 
-                    <input v-model.number="localWallet.balance" type="number" />
+                    <input v-model.number="balance" type="number" />
                 </label>
                 <p v-if="errors.balance" class="error">{{ errors.balance }}</p> <!--Dar formato de error-->
 
@@ -99,8 +92,6 @@ import { ref, watch, computed } from 'vue'
                 </div>
 
             </form>
-            <!-- Boton para cerrar -->
-        <!--<button @click="emit('update:modelValue', false)">Cerrar</button>-->
         </div>
     </div>
 </template>
