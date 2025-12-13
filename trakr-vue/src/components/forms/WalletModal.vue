@@ -1,41 +1,27 @@
 <script setup>
-    import { ref, computed } from 'vue'
-    import { useWalletsStore } from '@/stores/wallets';
-    import Button from '../ui/Button.vue';
+    import { ref, computed, toRef } from 'vue'
+    import { useWalletsStore } from '@/stores/wallets'
 
-    
-    const isOpen = defineModel() //Esto non lo tengo del todo claro
-    
     const walletsStore = useWalletsStore()
-    
+
     const emit = defineEmits(['update:modelValue','create'])
-    
+
     const props = defineProps({
         modelValue: Boolean
     })
-    
-//Funcion de crar antes de las validaciones
-    // function createWallet() {
-    //     if (!title.value) return 
-    //     emit('create', {name: title.value, balance: Number(balance.value) })
-    //     title.value = ''
-    //     balance.value = 0
-    //     isOpen.value = false
-    // }
-    
+
+    const isOpen = toRef(props, 'modelValue')
     const name =  ref('')
     const balance = ref(0)
 
-    const local = ref({ name, balance}) //Lo hago asi para poder usar las validaciones en lo que descubro como hacerlo
-    //Tanto aqui como en el template uso el local.value para entrar al valor de las variables (En lo que lo resuelvo)
     const errors = computed(() => {
         const e = {}
-        if (!local.value.name || !String(local.value.name).trim()) { //usamos el trim para evitar que hayan nombres con espacios
+        if (!name.value || !String(name.value).trim()) { //usamos el trim para evitar que hayan nombres con espacios
             e.name = 'El nombre no puede quedar vacio. '
         }
-        if (local.value.balance === '' || local.value.balance === null || isNaN(Number(local.value.balance))) {
+        if (balance.value === '' || balance.value === null || isNaN(Number(balance.value))) {
             e.balance = 'El saldo debe de ser un numero.'
-        } else if ( Number(local.value.balance) < 0 ){
+        } else if ( Number(balance.value) < 0 ){
             e.balance = 'El saldo no puede ser negativo.'
         }
 
@@ -47,9 +33,8 @@
     function createWallet() {
         if (!isValid.value) return //Guardamos directamente en pinia
         walletsStore.addWallet({ name: name.value, balance: balance.value})
-        // emit('create', { id: Date.now(), name: local.value.name.trim(), balance: Number(local.value.balance) })
-
-        local.value = { name: '', balance: 0} //Restablece la variable local 
+        name.value = ''
+        balance.value = 0 // Restablece la variable local 
         emit('update:modelValue', false) // Cierra el modal
     }
 
@@ -61,25 +46,23 @@
 <template>
     <div v-if="isOpen" class="modal-backdrop"  @click.self="close"  >
         <div class="modal">
+
             <h2>Nueva cartera</h2>
 
             <form @submit.prevent="createWallet" novalidate>
+
                 <label>
                     Nombre
-                    <input v-model="local.name" type="text"/> <br/>
+                    <input v-model="name" type="text"/> <br/>
                 </label>
                 <p v-if="errors.name" class="error">{{ errors.name }}</p>
 
                 <label>
                     Balance
-                    <input v-model="local.balance" type="number" step="0.01" />
+                    <input v-model.number="balance" type="number" step="0.01" />
                 </label>
                 <p v-if="errors.balance" class="error">{{ errors.balance }}</p>
-                <!-- <input v-model="title" placeholder="nombre de la cartera" />
-                <input v-model="balance" type="number" placeholder="saldo inicial" /> primer form -->
                 <div style="margin-top: 1rem; display: flex; gap: 8px;">
-                    <!-- <Button label="Guardar" variant="primary" @click="createWallet" />
-                    <Button label="Cancelar" variant="secundary" @click="isOpen = false" /> -->
                     <button type="submit" :disabled="!isValid">Guardar</button>
                     <button type="button" @click="close">Cancelar</button> 
                 </div>
