@@ -1,5 +1,5 @@
 <script setup>
-import { defineEmits, ref, watch, computed } from 'vue'
+import { ref, watch, computed } from 'vue'
 
     // const localWallet = ref({}) //Ya la declare de nuevo abajo
 

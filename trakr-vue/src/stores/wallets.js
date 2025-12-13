@@ -1,7 +1,7 @@
     import { defineStore } from 'pinia'
     import { ref } from 'vue'
      
-    export const useWalletsStore = defineStore('wallets', () => {
+    export const useWalletsStore = defineStore('wallets', () => { //Estado global, aqui van todas las wallets
         const wallets = ref([
             {id: 1, name: 'Cash', balance: 120}
         ])

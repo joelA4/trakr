@@ -1,8 +1,12 @@
 <script setup>
     import { ref, computed } from 'vue'
+    import { useWalletsStore } from '@/stores/wallets';
     import Button from '../ui/Button.vue';
 
-    const isOpen = defineModel()
+    
+    const isOpen = defineModel() //Esto non lo tengo del todo claro
+    
+    const walletsStore = useWalletsStore()
     
     const emit = defineEmits(['update:modelValue','create'])
     
@@ -19,7 +23,11 @@
     //     isOpen.value = false
     // }
     
-    const local = ref({ name: '', balance: 0 })
+    const name =  ref('')
+    const balance = ref(0)
+
+    const local = ref({ name, balance}) //Lo hago asi para poder usar las validaciones en lo que descubro como hacerlo
+    //Tanto aqui como en el template uso el local.value para entrar al valor de las variables (En lo que lo resuelvo)
     const errors = computed(() => {
         const e = {}
         if (!local.value.name || !String(local.value.name).trim()) { //usamos el trim para evitar que hayan nombres con espacios
@@ -37,8 +45,10 @@
     const isValid = computed(() => Object.keys(errors.value).length === 0)
     
     function createWallet() {
-        if (!isValid.value) return
-        emit('create', { id: Date.now(), name: local.value.name.trim(), balance: Number(local.value.balance) })
+        if (!isValid.value) return //Guardamos directamente en pinia
+        walletsStore.addWallet({ name: name.value, balance: balance.value})
+        // emit('create', { id: Date.now(), name: local.value.name.trim(), balance: Number(local.value.balance) })
+
         local.value = { name: '', balance: 0} //Restablece la variable local 
         emit('update:modelValue', false) // Cierra el modal
     }
