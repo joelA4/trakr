@@ -19,6 +19,7 @@
     <Button label="Agregar Transaccion" variant="primary" />
 
     <Button label="Abrir Modal" @click="showModal = true" />
+    
     <Modal :show="showModal" @close="showModal = false">
         <h2>Hola desde el Modal 🎉 </h2>
         <Button label="cerrar" @click="showModal = false" variant="secondary" />

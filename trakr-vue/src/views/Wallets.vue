@@ -28,6 +28,12 @@
     function addWallet(newWallet) {
         walletsStore.addWallet(newWallet)
     }
+
+    const onDelete = (id) => {
+        if (confirm('Quieres eliminar esta carterta?')){
+            walletsStore.deleteWallet(id)
+        }
+    }
 </script>
 
 <template>
@@ -44,7 +50,8 @@
              :value="`$${wallet.balance}`"
              > 
             <template #actions>
-                <Button label="Editar" variant="secondary" @click="startEdit(wallet)"/>
+                <Button label="Editar" variant="secondary" @click="startEdit(wallet)" />
+                <Button label="Eleminar" variant="secondary" @click="onDelete" />
             </template>
             </DataCard>
         </div>
