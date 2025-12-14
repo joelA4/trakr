@@ -1,6 +1,13 @@
 <script setup>
-import Button from '../ui/Button.vue'
-import { ref } from 'vue'
+    import Button from '../ui/Button.vue'
+    import { ref } from 'vue'
+
+    const props = defineProps({
+        wallets: {
+            type: Array,
+            requiered: true
+        }
+    })
 
     const emit = defineEmits(['save'])
 
@@ -8,6 +15,7 @@ import { ref } from 'vue'
     const date = ref('')
     const type = ref('expense')
     const walletId = ref(null)
+    
 
     const onSubmit = () => {
         emit('save', {
@@ -20,6 +28,41 @@ import { ref } from 'vue'
 </script>
 
 <template>
+    <form action="">
+        <!-- Wallet id -->
+        <select v-model="walletId" required>
+            <option disabled value="">Selecciona una cartera </option>
+            <option 
+                v-for="wallet in wallets"
+                :key="walletId"
+                :value="wallet.id"
+            >
+            {{ wallet.name }}
+            </option>
+        </select><br>
+        
+        <!-- Tipo -->
+         <select v-model="type">
+            <option value="expense">Gasto</option>
+            <option value="income">Ingreso</option>
+         </select> <br>
+
+         <!-- monto -->
+          <input 
+          type="number"
+          v-model="amount"
+          placeholder="Monto"
+          required
+          /> <br>
+
+          <!-- Fecha -->
+           <input 
+           type="date"
+           v-model="date"
+           required
+           /> <br/>
+    </form>
+
     <div class="button-conteiner">
         <Button label="Guardar" variant="secundary" @click="onSubmit"/>
     </div>

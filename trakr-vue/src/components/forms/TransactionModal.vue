@@ -1,6 +1,12 @@
 <script setup>
     import { useTransactionsStore } from '@/stores/transactions'
-import TransactionForm from './TransactionForm.vue';
+    import TransactionForm from './TransactionForm.vue';
+    import { computed } from 'vue'
+    import { useWalletsStore } from '@/stores/wallets'
+
+    const walletsStore = useWalletsStore()
+
+    const wallets = computed(() => walletsStore.wallets)
 
     const transactionsStore = useTransactionsStore()
     
@@ -17,19 +23,18 @@ import TransactionForm from './TransactionForm.vue';
         transactionsStore.addTransaction(transactionData)
         emit = defineEmits(['close'])
     }
+
+    //Intento
 </script>
 
 <template>
     <div v-if="show" class="modal-backdrop" @click.self="emit('close')">
         <div class="modal-content">
+
             <h2 class="modal-content2">Nueva Transaccion</h2>
+            
+            <TransactionForm :wallets="wallets" @save="onSave" />
 
-            <p class="modal-content2">Aqui iria el form despues.</p>
-
-            <TransactionForm @save="onSave" />
-
-            <!-- boton para cerrar el modal-content -->
-           <!-- <button @click="emit('close')">Cerrar</button>  --> 
         </div>
     </div>
 </template>

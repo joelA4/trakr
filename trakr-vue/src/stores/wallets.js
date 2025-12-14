@@ -3,7 +3,8 @@
      
     export const useWalletsStore = defineStore('wallets', () => { //Estado global, aqui van todas las wallets
         const wallets = ref([
-            {id: 1, name: 'Cash', balance: 120}
+            {id: 1, name: 'Cash', balance: 120},
+            {id: 2, name: 'Banco', balance: 10}
         ])
         
         const addWallet = (wallet) => {
