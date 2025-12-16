@@ -5,8 +5,15 @@
     import WalletModal from '@/components/forms/WalletModal.vue'
     import EditWalletModal from '@/components/modals/EditWalletModal.vue'
     import { useWalletsStore } from '@/stores/wallets'
+    import { useTransactionsStore } from '@/stores/transactions'
+    import { useRoute } from 'vue-router'
 
+    const route = useRoute()
+
+    const transactionsStore = useTransactionsStore() 
     const walletsStore = useWalletsStore()
+    
+    const walletId = Number(route.params.id)
     
     //Lista de carteras: llamadas desde el stores
     const wallets = computed(()  => walletsStore.wallets)
@@ -34,6 +41,11 @@
             walletsStore.deleteWallet(id)
         }
     }
+
+    const walletTransactions = computed(() => {
+        return transactionsStore.transactionByWallet(walletId)
+    })
+    
 </script>
 
 <template>
@@ -60,8 +72,13 @@
         <!-- Modal -->
          <WalletModal v-model="showModal" @create="addWallet" />
          <EditWalletModal v-model="showEditModal" :wallet="editingWallet" @save="applyEdit"/>
+        </div>
 
-    </div>
+        <HistoryItem
+        v-for="transaction in walletTransactions"
+        :key="transaction.id"
+        :transaction="transaction"
+        />
 
 </template>
 

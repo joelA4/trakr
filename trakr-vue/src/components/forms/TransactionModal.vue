@@ -21,6 +21,7 @@
 
     const onSave = (transactionData) => {
         transactionsStore.addTransaction(transactionData)
+        emit = ('save', transactionData)
         emit = defineEmits(['close'])
     }
 

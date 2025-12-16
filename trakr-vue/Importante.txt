@@ -1,0 +1,169 @@
+Lo voy a dejar hasta aqui, no tengo los recursos intelectuales suficientes para seguir, me concentrare en aprender mas y perfeccionar lo que ya se para hacerlo funcionar
+
+
+
+Perfecto, te dejo un **resumen claro, técnico y entendible**, ideal para explicárselo a otra persona (compañero, mentor o reclutador).
+Está pensado para que se note **criterio de arquitectura**, no solo “que funciona”.
+
+---
+
+## 📌 Proyecto: **Trakr** – App de finanzas personales (Vue 3)
+
+### 🧠 Objetivo general
+
+Aplicación web para **gestionar carteras (wallets), transacciones, presupuestos y reportes**, construida con **Vue 3 + Composition API + Pinia**, siguiendo una arquitectura escalable y modular.
+
+---
+
+## 🏗️ Arquitectura y estructura
+
+* Proyecto organizado por **responsabilidad**, no por tamaño.
+* Separación clara entre:
+
+  * **Views** (pantallas principales)
+  * **Components** (reutilizables y específicos)
+  * **Stores (Pinia)** para el estado global
+* Uso de **layout principal** con navegación persistente.
+
+📁 Ejemplo:
+
+```
+views/
+components/
+  ├── layout
+  ├── ui
+  ├── forms
+  ├── dashboard
+stores/
+router/
+```
+
+---
+
+## 🧭 Navegación y layout
+
+✔ Router completamente funcional
+✔ Rutas principales definidas (Dashboard, Wallets, Transactions, etc.)
+✔ `MainLayout` centraliza:
+
+* Navbar
+* SideMenu
+* RouterView
+
+La app mantiene estructura constante mientras cambian las vistas.
+
+---
+
+## 💼 Gestión de Wallets (funcional)
+
+Esta parte está **completamente cerrada**:
+
+✔ Listado de wallets
+✔ Crear wallet
+✔ Editar wallet
+✔ Validaciones de formulario
+✔ Modal reutilizable
+✔ Eventos correctamente conectados
+✔ Estado manejado con Pinia
+✔ IDs únicos generados desde código (no por el usuario)
+
+> El usuario **no decide IDs**, el sistema los garantiza → mejor diseño y menos errores.
+
+---
+
+## ➕ UI y UX
+
+✔ Floating Action Button (FAB) global
+✔ Modal de transacciones preparado
+✔ Componentes desacoplados del store (usan props y emits)
+✔ Componentes reutilizables (`Button`, `Modal`, etc.)
+
+📌 **Regla clave aplicada**:
+
+> Los formularios **no acceden directamente al store**
+> → solo emiten eventos → el padre decide qué hacer
+
+---
+
+## 🔄 Estado global (Pinia)
+
+✔ Stores definidos siguiendo buenas prácticas
+✔ Lógica centralizada (no mezclada con UI)
+✔ Preparación de `useTransactionsStore`
+
+Estructura conceptual de transacción:
+
+```js
+{
+  id,
+  amount,
+  date,
+  type,     // income | expense
+  walletId
+}
+```
+
+---
+
+## 🔌 Flujo de datos (ya diseñado)
+
+Aunque las transacciones aún no se muestran, el flujo está pensado así:
+
+```
+Botón / FAB
+ → abre Modal
+ → Form emite submit
+ → Vista captura evento
+ → Llama a store.addTransaction()
+ → Estado se actualiza
+ → Getter filtra por wallet
+ → Lista renderiza
+```
+
+Actualmente estás **cerrando este circuito**.
+
+---
+
+## 📍 Punto actual del proyecto
+
+### Fase actual: **Fase 3 – Core Logic (80%)**
+
+✔ UI lista
+✔ Arquitectura sólida
+✔ Wallets cerradas
+✔ Modal y eventos conectados
+⏳ Falta cerrar:
+
+* Persistencia de transacciones en el store
+* Getters (`transactionsByWallet`)
+* Render del historial por wallet
+
+👉 **No es un problema visual**, es solo cerrar el flujo de estado.
+
+---
+
+## 🧠 Decisiones de diseño importantes
+
+* La **wallet activa se obtiene desde la ruta**, no del usuario
+* El formulario es reutilizable
+* El store no se acopla a componentes específicos
+* Pensado para escalar a:
+
+  * Presupuestos
+  * Reportes
+  * Gráficos
+  * Persistencia (backend / localStorage)
+
+---
+
+## 🚀 En resumen corto (para decir en voz alta)
+
+> “Tengo una app en Vue 3 con Pinia, bien estructurada, con navegación, layout global, gestión completa de wallets y una arquitectura desacoplada. Estoy en la fase donde cierro el flujo de transacciones: el store ya está diseñado, el modal y los eventos funcionan, y estoy conectando el estado con la UI para escalar luego a presupuestos y reportes.”
+
+Si quieres, en el próximo mensaje podemos:
+
+* 📄 convertir esto en **README.md**
+* 🧑‍💼 adaptarlo para **entrevista**
+* 🗺️ marcar **qué sigue exactamente después de esta fase**
+
+Tú decides 👌

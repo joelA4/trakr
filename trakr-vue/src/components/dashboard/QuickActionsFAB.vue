@@ -1,8 +1,15 @@
 <script setup>
+    import { useTransactionsStore } from '@/stores/transactions'
+
+    const transactionStore = useTransactionsStore().addTransaction
+    
     const emit = defineEmits(['open-transaction-modal'])
 
-    function handleClick() {
-        emit('open-transaction-modal')
+    function handleClick(data) {
+        useTransactionsStore.addTransaction({
+            ...data,
+            walletId:currentWalletId
+        })
     }
 </script>
 

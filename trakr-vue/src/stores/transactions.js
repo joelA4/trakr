@@ -15,9 +15,16 @@ export const useTransactionsStore = defineStore('transactions', () => {
         transactions,value = transactions.value.filter(t => t.id !== id)
     }
 
+    const transactionByWallet = (walletId) => {
+        return transactions.value.filter(
+            transaction => transaction.walletId === walletId
+        )
+    }
+
     return {
         transactions,
         addTransaction,
-        deleteTransaction
+        deleteTransaction,
+        transactionByWallet
     }
 })
